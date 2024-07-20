@@ -1,6 +1,7 @@
 from django.db import models
 from ckeditor.fields import RichTextField
-# Create your models here.
+from pytube import Playlist
+
 
 class CourseCategory(models.Model):
     title = models.CharField(max_length=150)
@@ -17,9 +18,31 @@ class Course(models.Model):
     )
     title = models.CharField(max_length=150)
     description = models.TextField()
+    playlist_url = models.CharField(max_length=500)
 
     def __str__(self):
         return self.title
+    
+    def save(self):
+        super().save()
+        if not self.departments.all():
+            playlist = Playlist(self.playlist_url)
+            cd = CourseDepartment.objects.create(title='Umumiy', course=self)
+            for video in playlist.videos:
+                title = video.title
+                print(video.initial_data)
+                try:
+                    description = video.initial_data['contents']['twoColumnWatchNextResults']['results']['results']['contents'][1]['videoSecondaryInfoRenderer']['attributedDescription']['content']
+                except:
+                    description = " "
+                video_link = video.embed_url
+                CoursePart.objects.create(
+                    course_department=cd,
+                    title=title,
+                    thumb_image=video.thumbnail_url,
+                    description=description,
+                    video_link=video_link
+                )
 
 class CourseDepartment(models.Model):
     course = models.ForeignKey(

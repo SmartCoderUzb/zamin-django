@@ -1,10 +1,10 @@
-asgiref==3.8.1
-Django==5.0.6
+cryptography==42.0.8
+Django==4.2.13
+django-allauth==0.63.3
 django-ckeditor==6.7.1
-django-cors-headers==4.3.1
-django-js-asset==2.2.0
-djangorestframework==3.15.1
+django-cors-headers==4.4.0
+djangorestframework==3.15.2
 djangorestframework-simplejwt==5.3.1
 pillow==10.3.0
 PyJWT==2.8.0
-sqlparse==0.5.0
+requests==2.32.3
